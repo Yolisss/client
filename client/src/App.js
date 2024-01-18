@@ -7,7 +7,7 @@ function App() {
 
   useEffect(() => {
     fetch("http://localhost:5000/api/courses")
-      .then((res) => res.json())
+      .then((res) => console.log(res))
       .then((data) => console.log(data));
   }, []);
 
@@ -15,7 +15,7 @@ function App() {
     <>
       <ul>
         {courses.map((course) => (
-          <li>{courses.title}</li>
+          <li key={course.id}>{course.title}</li>
         ))}
       </ul>
     </>
