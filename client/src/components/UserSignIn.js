@@ -32,7 +32,7 @@ const UserSignIn = () => {
 
     //"we want to get the user's info"
     const fetchOptions = {
-      metod: "GET",
+      method: "GET",
       //credentials need to be passed in an auth header
       //using basic auth scheme
       headers: {
