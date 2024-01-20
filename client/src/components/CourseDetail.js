@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 const CourseDetail = () => {
   const [course, setCourse] = useState([]);
@@ -40,9 +40,9 @@ const CourseDetail = () => {
           <a className="button" href="#">
             Delete Course
           </a>
-          <a className="button button-secondary" href="index.html">
+          <Link className="button button-secondary" to="/">
             Return to List
-          </a>
+          </Link>
         </div>
       </div>
       <div className="wrap">
