@@ -6,6 +6,7 @@ const UserSignUp = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  //state
   const firstName = useRef(null);
   const lastName = useRef(null);
   const emailAddress = useRef(null);
@@ -15,6 +16,7 @@ const UserSignUp = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
+    //where we'll store value from user
     const user = {
       firstName: firstName.current.value,
       lastName: lastName.current.value,
