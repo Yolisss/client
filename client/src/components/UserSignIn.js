@@ -3,50 +3,63 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
 
 const UserSignIn = () => {
-  //this context variable is now equal to the obj we passed to
-  //the value prop in UserContext.Provider:
-  //<UserContext.Provider value={{
-  //   authUser,
-  //   actions: {
-  //     signIn
-  //   }
-  // }}>
-
   //coming from folder 'context', file UserContext, and grabbing actions provided from
   //Provider
   const { actions } = useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
   // State
-  const email = useRef(null);
+  const emailAddress = useRef(null);
   const password = useRef(null);
   const [errors, setErrors] = useState([]);
   // Event Handlers
   //1. writing async since func is bringing back a promise
   const handleSubmit = async (event) => {
     event.preventDefault();
-    //from will contain the path we'll navigate the user to
-    // once they sign in
-    //ex once i sign in, it'll take me to the courses page instead of sign in
-    let from = "/";
-    if (location.state) {
-      from = location.state.from;
-    }
-    //3. encoding user's credentials and adding to req header
+
+    //client passes the authentication info to server
+    //and in an auth header Base 64 encoding
+    //creating credentials obj that will hold email and password
     const credentials = {
-      email: email.current.value,
+      emailAddress: emailAddress.current.value,
       password: password.current.value,
     };
+
+    //store encoded credientials
+    const encodedCredentials = btoa(
+      `${credentials.emailAddress}:${credentials.password}`
+    );
+
+    //"we want to get the user's info"
+    const fetchOptions = {
+      metod: "GET",
+      //credentials need to be passed in an auth header
+      //using basic auth scheme
+      headers: {
+        Authorization: `Basic ${encodedCredentials}`,
+      },
+    };
+
     try {
-      const user = await actions.signIn(credentials);
-      if (user) {
-        navigate(from);
+      const response = await fetch(
+        "http://localhost:5000/api/users",
+        fetchOptions
+      );
+      //this if statement will return user's data such as
+      //{id:4, firstName: 'yolis', lastName: 'zac' email..etc}
+      if (response.status === 200) {
+        const user = await response.json();
+        console.log(`${user.firstName} is now signed in`);
+        navigate("/");
+      } else if (response.status === 401) {
+        //VLAD: why in []?
+        setErrors(["Sign-in was unsuccessful"]);
       } else {
-        setErrors(["Sign in was unsuccessful"]);
+        throw new Error();
       }
-    } catch (error) {
-      console.log(error);
-      navigate("/error");
+    } catch (err) {
+      console.log(err);
+      //navigate("/error")
     }
   };
   const handleCancel = (event) => {
@@ -59,7 +72,12 @@ const UserSignIn = () => {
       <h2>Sign In</h2>
       <form onSubmit={handleSubmit}>
         <label htmlFor="emailAddress">Email Address</label>
-        <input id="emailAddress" name="emailAddress" type="email" ref={email} />
+        <input
+          id="emailAddress"
+          name="emailAddress"
+          type="email"
+          ref={emailAddress}
+        />
         <label htmlFor="password">Password</label>
         <input id="password" name="password" type="password" ref={password} />
         <button className="button" type="submit">
