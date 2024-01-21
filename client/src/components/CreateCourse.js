@@ -1,8 +1,15 @@
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+//grabbing user data that is being distributed throughout app
+import UserContext from "../context/UserContext";
 
 const CreateCourse = () => {
+  const { authUser } = useContext(UserContext);
+  //vlad q, why array
+  const [errors, setErrors] = useState([]);
+
   const navigate = useNavigate();
+  //specifically grabbing authUser from context
 
   const title = useRef(null);
   const description = useRef(null);
@@ -19,26 +26,43 @@ const CreateCourse = () => {
       materialsNeeded: materialsNeeded.current.value,
     };
 
+    //store encoded credientials
+    //from authUser (context) we're grabbing email and password
+    const encodedCredentials = btoa(
+      `${authUser.emailAddress}:${authUser.password}`
+    );
+
     const fetchOptions = {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
+        //type of authorization we're using and passing in our credentials
+        Authorization: `Basic ${encodedCredentials}`,
       },
       body: JSON.stringify(newCourse),
     };
 
-    const response = await fetch(
-      "http://localhost:5000/api/courses",
-      fetchOptions
-    );
-    console.log(response);
-    if (response.status === 201) {
-      console.log(`${newCourse.title} was successfully added`);
-    } else if (response.status === 400) {
-      const data = await response.JSON();
-      console.log(data);
+    try {
+      if (authUser) {
+        const response = await fetch(
+          "http://localhost:5000/api/courses",
+          fetchOptions
+        );
+        console.log(response);
+        if (response.status === 201) {
+          console.log(`${newCourse.title} was successfully created!`);
+        } else if (response.status === 400) {
+          const data = await response.JSON();
+          setErrors(data.errors);
+        } else {
+          throw new Error();
+        }
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
+  console.log(authUser, "useruser");
 
   const handleCancel = (event) => {
     event.preventDefault();
@@ -58,7 +82,7 @@ const CreateCourse = () => {
                 type="text"
                 ref={title}
               />
-              <p>By Joe Smith</p>
+              <p>By someone</p>
               <label htmlFor="courseDescription">Course Description</label>
               <textarea
                 id="courseDescription"
