@@ -18,7 +18,7 @@ function Courses() {
       ))}
 
       {/* need to include link to "Create Course" screen */}
-      <Link>Create Course</Link>
+      <Link to="/courses/create">Create Course</Link>
     </div>
   );
 }
