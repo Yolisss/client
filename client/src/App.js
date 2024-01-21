@@ -8,10 +8,12 @@ import UserSignUp from "./components/UserSignUp";
 import CourseDetail from "./components/CourseDetail";
 import CreateCourse from "./components/CreateCourse";
 import UpdateCourse from "./components/UpdateCourse";
+import Header from "./components/Header";
 
 function App() {
   return (
     <div>
+      <Header />
       <Routes>
         <Route path="/" element={<Courses />} />
         <Route path="/signin" element={<UserSignIn />} />
