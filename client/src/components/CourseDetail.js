@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Link, useParams, useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 
 const CourseDetail = () => {
   const [course, setCourse] = useState([]);
   const { id } = useParams();
+  const { authUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const estimatedTime = course.estimatedTime;
   const title = course.title;
@@ -14,6 +17,7 @@ const CourseDetail = () => {
   //parse to json
   //setCourse to new data?
 
+  //grabbing a specific course
   useEffect(() => {
     try {
       fetch(`http://localhost:5000/api/courses/${id}`)
@@ -28,16 +32,53 @@ const CourseDetail = () => {
     }
   }, []);
 
+  //delete handler
+  const handleDelete = async (event) => {
+    event.preventDefault();
+
+    //store encoded credientials
+    const encodedCredentials = btoa(
+      `${authUser.emailAddress}:${authUser.password}`
+    );
+
+    //"we want to DELETE the user's info"
+    const fetchOptions = {
+      method: "DELETE",
+      //credentials need to be passed in an auth header
+      //using basic auth scheme
+      headers: {
+        Authorization: `Basic ${encodedCredentials}`,
+        "Content-Type": "application/json; charset=utf-8",
+      },
+    };
+
+    //send DELETE request
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/courses/${id}`,
+        fetchOptions
+      );
+      if (response.status === 204) {
+        console.log(`${course.title} was successfully deleted`);
+        navigate("/");
+      } else {
+        throw new Error();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   console.log(course);
   //id, title, description, estimatedTime, materialsNeeded
   return (
     <div>
       <div className="actions--bar">
         <div className="wrap">
-          <a className="button" href="update-course.html">
+          <Link className="button" to="/courses/:id/update">
             Update Course
-          </a>
-          <a className="button" href="#">
+          </Link>
+          <a className="button" onClick={handleDelete}>
             Delete Course
           </a>
           <Link className="button button-secondary" to="/">
