@@ -34,7 +34,8 @@ const UpdateCourse = () => {
   }, [id]);
 
   //event handler
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     //handling credentials
     //store encoded credientials
     const encodedCredentials = btoa(
@@ -49,12 +50,13 @@ const UpdateCourse = () => {
         Authorization: `Basic ${encodedCredentials}`,
         "Content-Type": "application/json; charset=utf-8",
       },
+      body: JSON.stringify(updatedCourse),
     };
 
     //send PUT request
     try {
       //if we get correct user, and user's id === user's course id
-      if (authUser && authUser.id === course.userId) {
+      if (authUser && authUser.id === course.user.id) {
         const response = await fetch(
           `http://localhost:5000/api/courses/${id}`,
           fetchOptions
