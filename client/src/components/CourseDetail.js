@@ -30,7 +30,7 @@ const CourseDetail = () => {
     } catch (err) {
       console.log(err);
     }
-  }, []);
+  }, [id, navigate]);
 
   //delete handler
   const handleDelete = async (event) => {
@@ -75,15 +75,23 @@ const CourseDetail = () => {
     <div>
       <div className="actions--bar">
         <div className="wrap">
-          <Link className="button" to="/courses/:id/update">
-            Update Course
-          </Link>
-          <a className="button" onClick={handleDelete}>
-            Delete Course
-          </a>
-          <Link className="button button-secondary" to="/">
+          {authUser && authUser.id === course.userId ? (
+            <>
+              <a className="button" href={`${course.id}/update`}>
+                Update Course
+              </a>
+              <a
+                className="button"
+                href={`${course.id}`}
+                onClick={handleDelete}
+              >
+                Delete Course
+              </a>
+            </>
+          ) : null}
+          <a className="button button-secondary" href="/">
             Return to List
-          </Link>
+          </a>
         </div>
       </div>
       <div className="wrap">
