@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../context/UserContext";
+
 const Header = () => {
   const { authUser } = useContext(UserContext);
+
+  console.log(authUser, "hello header");
+
   return (
     <header>
       <div className="wrap header--flex">
