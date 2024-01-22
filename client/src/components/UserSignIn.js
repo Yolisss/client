@@ -25,37 +25,10 @@ const UserSignIn = () => {
       password: password.current.value,
     };
 
-    //store encoded credientials
-    const encodedCredentials = btoa(
-      `${credentials.emailAddress}:${credentials.password}`
-    );
-
-    //"we want to get the user's info"
-    const fetchOptions = {
-      method: "GET",
-      //credentials need to be passed in an auth header
-      //using basic auth scheme
-      headers: {
-        Authorization: `Basic ${encodedCredentials}`,
-      },
-    };
-
     try {
-      const response = await fetch(
-        "http://localhost:5000/api/users",
-        fetchOptions
-      );
-      //this if statement will return user's data such as
-      //{id:4, firstName: 'yolis', lastName: 'zac' email..etc}
-      if (response.status === 200) {
-        const user = await response.json();
-        console.log(`${user.firstName} is now signed in`);
-        navigate("/");
-      } else if (response.status === 401) {
-        //VLAD: why in []?
-        setErrors(["Sign-in was unsuccessful"]);
-      } else {
-        throw new Error();
+      const user = await actions.signIn(credentials);
+      if (user) {
+        navigate();
       }
     } catch (err) {
       console.log(err);
