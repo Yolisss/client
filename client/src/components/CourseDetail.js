@@ -69,13 +69,13 @@ const CourseDetail = () => {
     }
   };
 
-  console.log(course);
+  console.log(course, authUser);
   //id, title, description, estimatedTime, materialsNeeded
   return (
     <div>
       <div className="actions--bar">
         <div className="wrap">
-          {authUser && authUser.id === course.userId ? (
+          {authUser && authUser.id === course?.user?.id ? (
             <>
               <a className="button" href={`${course.id}/update`}>
                 Update Course
