@@ -14,7 +14,10 @@ function Courses() {
   return (
     <div>
       {courses.map((course) => (
-        <h3 key={course.id}>{course.title}</h3>
+        <a key={course.id} href={`/courses/${course.id}`}>
+          <h2>Course</h2>
+          <h3>{course.title}</h3>
+        </a>
       ))}
 
       {/* need to include link to "Create Course" screen */}
