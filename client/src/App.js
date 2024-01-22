@@ -10,6 +10,7 @@ import CreateCourse from "./components/CreateCourse";
 import UpdateCourse from "./components/UpdateCourse";
 import Header from "./components/Header";
 import UserSignOut from "./components/UserSignOut";
+import PrivateRoute from "./components/PrivateRoute";
 
 function App() {
   return (
@@ -21,8 +22,10 @@ function App() {
         <Route path="/signup" element={<UserSignUp />} />
         <Route path="/signout" element={<UserSignOut />} />
         <Route path="/courses/:id" element={<CourseDetail />} />
-        <Route path="/courses/create" element={<CreateCourse />} />
-        <Route path="/courses/:id/update" element={<UpdateCourse />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/courses/create" element={<CreateCourse />} />
+          <Route path="/courses/:id/update" element={<UpdateCourse />} />
+        </Route>
       </Routes>
     </div>
   );
