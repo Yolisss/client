@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import ReactMarkdown from "react-markdown";
 
 const CourseDetail = () => {
   const [course, setCourse] = useState([]);
@@ -101,13 +102,15 @@ const CourseDetail = () => {
             <div>
               <h3 className="course--detail--title">Course</h3>
               <h4 className="course--name">{title}</h4>
-              <p>{description}</p>
+              <ReactMarkdown>{description}</ReactMarkdown>
             </div>
             <div>
               <h3 className="course--detail--title">Estimated Time</h3>
               <p>{estimatedTime}</p>
               <h3 className="course--detail--title">Materials Needed</h3>
-              <ul className="course--detail--list">{materialsNeeded}</ul>
+              <ul className="course--detail--list">
+                <ReactMarkdown>{materialsNeeded}</ReactMarkdown>
+              </ul>
             </div>
           </div>
         </form>
