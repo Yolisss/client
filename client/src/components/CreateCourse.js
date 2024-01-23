@@ -24,6 +24,7 @@ const CreateCourse = () => {
       description: description.current.value,
       estimatedTime: estimatedTime.current.value,
       materialsNeeded: materialsNeeded.current.value,
+      userId: authUser.id,
     };
 
     //store encoded credientials
@@ -51,6 +52,7 @@ const CreateCourse = () => {
         console.log(response);
         if (response.status === 201) {
           console.log(`${newCourse.title} was successfully created!`);
+          navigate("/");
         } else if (response.status === 400) {
           const data = await response.JSON();
           setErrors(data.errors);
@@ -82,7 +84,9 @@ const CreateCourse = () => {
                 type="text"
                 ref={title}
               />
-              <p>By someone</p>
+              <p>
+                {authUser.firstName} {authUser.lastName}
+              </p>
               <label htmlFor="courseDescription">Course Description</label>
               <textarea
                 id="courseDescription"
