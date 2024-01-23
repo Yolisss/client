@@ -85,7 +85,7 @@ router.post("/", authenticateUser, async (req, res) => {
 router.put("/:id", authenticateUser, async (req, res, next) => {
   const course = await Course.findByPk(req.params.id);
   try {
-    if (req.currentUser.id != req.params.id) {
+    if (req.currentUser.id != course.userId) {
       res.status(403).json({ message: "Not Authorized" });
     } else {
       await course.update(req.body);
