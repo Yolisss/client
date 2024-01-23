@@ -1,11 +1,12 @@
-import { useRef } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useContext, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import ErrorsDisplay from "./ErrorsDisplay";
+import UserContext from "../context/UserContext";
 
 const UserSignUp = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  const { actions } = useContext(UserContext);
 
   //state
   const firstName = useRef(null);
@@ -18,7 +19,7 @@ const UserSignUp = () => {
     event.preventDefault();
 
     //where we'll store value from user
-    const user = {
+    const newUser = {
       firstName: firstName.current.value,
       lastName: lastName.current.value,
       emailAddress: emailAddress.current.value,
@@ -30,7 +31,7 @@ const UserSignUp = () => {
       headers: {
         "Content-Type": "application/json; charset=utf-8",
       },
-      body: JSON.stringify(user),
+      body: JSON.stringify(newUser),
     };
 
     const response = await fetch(
@@ -39,9 +40,13 @@ const UserSignUp = () => {
     );
     console.log(response);
     if (response.status === 201) {
-      console.log(
-        `${user.firstName} ${user.lastName} is successfully signed up and authenticated`
-      );
+      if (newUser) {
+        console.log(
+          `${newUser.firstName} ${newUser.lastName} is successfully signed up and authenticated`
+        );
+        await actions.signIn(newUser);
+        navigate("/");
+      }
     } else if (response.status === 400) {
       const data = await response.json();
       setErrors(data.errors);
