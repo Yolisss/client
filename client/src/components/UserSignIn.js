@@ -1,5 +1,5 @@
 import { useState, useRef, useContext } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import ErrorsDisplay from "./ErrorsDisplay";
 
@@ -8,7 +8,7 @@ const UserSignIn = () => {
   //Provider
   const { actions } = useContext(UserContext);
   const navigate = useNavigate();
-  const location = useLocation();
+
   // State
   const emailAddress = useRef(null);
   const password = useRef(null);
@@ -32,7 +32,7 @@ const UserSignIn = () => {
         navigate("/");
       }
     } catch (err) {
-      console.log(err);
+      setErrors(err);
     }
   };
   const handleCancel = (event) => {
