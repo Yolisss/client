@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 
 const UpdateCourse = () => {
   const [course, setCourse] = useState({});
+  console.log(course);
   const [errors, setErrors] = useState([]);
   const [updatedCourse, setUpdatedCourse] = useState({
     title: "",
@@ -11,6 +12,7 @@ const UpdateCourse = () => {
     estimatedTime: "",
     materialsNeeded: "",
   });
+  console.log(updatedCourse, "updated course");
 
   const { id } = useParams();
   const { authUser } = useContext(UserContext);
@@ -75,7 +77,7 @@ const UpdateCourse = () => {
       }
     } catch (error) {
       console.log(error);
-      navigate("/error");
+      //navigate("/error");
     }
   };
 
@@ -104,9 +106,9 @@ const UpdateCourse = () => {
                 setUpdatedCourse({ ...updatedCourse, title: e.target.value })
               }
             />
-            {course.User && (
+            {course.user && (
               <p>
-                By {course.User.firstName} {course.User.lastName}
+                By {course.user.firstName} {course.user.lastName}
               </p>
             )}
             <label htmlFor="courseDescription">Course Description</label>
