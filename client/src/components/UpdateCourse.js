@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from "react";
 import UserContext from "../context/UserContext";
 import { useParams, useNavigate } from "react-router-dom";
+import ErrorsDisplay from "./ErrorsDisplay";
 
 const UpdateCourse = () => {
   const [course, setCourse] = useState({});
-  console.log(course);
   const [errors, setErrors] = useState([]);
   const [updatedCourse, setUpdatedCourse] = useState({
     title: "",
@@ -12,7 +12,6 @@ const UpdateCourse = () => {
     estimatedTime: "",
     materialsNeeded: "",
   });
-  console.log(updatedCourse, "updated course");
 
   const { id } = useParams();
   const { authUser } = useContext(UserContext);
@@ -93,6 +92,7 @@ const UpdateCourse = () => {
   return (
     <div className="wrap">
       <h2>Update Course</h2>
+      <ErrorsDisplay errors={errors} />
       <form onSubmit={handleSubmit}>
         <div className="main--flex">
           <div>
