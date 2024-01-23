@@ -70,7 +70,7 @@ const CourseDetail = () => {
     }
   };
 
-  console.log(course, authUser);
+  // console.log(course, authUser);
   //id, title, description, estimatedTime, materialsNeeded
   return (
     <div>
@@ -102,6 +102,9 @@ const CourseDetail = () => {
             <div>
               <h3 className="course--detail--title">Course</h3>
               <h4 className="course--name">{title}</h4>
+              <p>
+                By {authUser.firstName} {authUser.lastName}
+              </p>
               <ReactMarkdown>{description}</ReactMarkdown>
             </div>
             <div>
