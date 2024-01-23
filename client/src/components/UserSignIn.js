@@ -28,7 +28,7 @@ const UserSignIn = () => {
     try {
       const user = await actions.signIn(credentials);
       if (user) {
-        navigate();
+        navigate("/");
       }
     } catch (err) {
       console.log(err);
