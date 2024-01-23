@@ -1,6 +1,7 @@
 import { useState, useRef, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import ErrorsDisplay from "./ErrorsDisplay";
 
 const UserSignIn = () => {
   //coming from folder 'context', file UserContext, and grabbing actions provided from
@@ -42,6 +43,7 @@ const UserSignIn = () => {
   return (
     <div>
       <h2>Sign In</h2>
+      <ErrorsDisplay errors={errors} />
       <form onSubmit={handleSubmit}>
         <label htmlFor="emailAddress">Email Address</label>
         <input
