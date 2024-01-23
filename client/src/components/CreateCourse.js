@@ -2,6 +2,7 @@ import { useContext, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 //grabbing user data that is being distributed throughout app
 import UserContext from "../context/UserContext";
+import ErrorsDisplay from "./ErrorsDisplay";
 
 const CreateCourse = () => {
   const { authUser } = useContext(UserContext);
@@ -54,7 +55,7 @@ const CreateCourse = () => {
           console.log(`${newCourse.title} was successfully created!`);
           navigate("/");
         } else if (response.status === 400) {
-          const data = await response.JSON();
+          const data = await response.json();
           setErrors(data.errors);
         } else {
           throw new Error();
@@ -74,6 +75,8 @@ const CreateCourse = () => {
   return (
     <div>
       <div className="wrap">
+        <h2>Create Course</h2>
+        <ErrorsDisplay errors={errors} />
         <form onSubmit={handleSubmit}>
           <div className="main--flex">
             <div>
