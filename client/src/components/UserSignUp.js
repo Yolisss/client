@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useState } from "react";
+import ErrorsDisplay from "./ErrorsDisplay";
 
 const UserSignUp = () => {
   const navigate = useNavigate();
@@ -42,8 +43,8 @@ const UserSignUp = () => {
         `${user.firstName} ${user.lastName} is successfully signed up and authenticated`
       );
     } else if (response.status === 400) {
-      const data = await response.JSON();
-      console.log(data);
+      const data = await response.json();
+      setErrors(data.errors);
     }
   };
 
@@ -55,6 +56,7 @@ const UserSignUp = () => {
     <div>
       <div className="form--centered">
         <h2>Sign Up</h2>
+        <ErrorsDisplay errors={errors} />
         <form onSubmit={handleSubmit}>
           <label htmlFor="firstName">First Name</label>
           <input
