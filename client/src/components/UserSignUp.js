@@ -64,37 +64,18 @@ const UserSignUp = () => {
         <ErrorsDisplay errors={errors} />
         <form onSubmit={handleSubmit}>
           <label htmlFor="firstName">First Name</label>
-          <input
-            id="firstName"
-            name="firstName"
-            type="text"
-            defaultValue
-            ref={firstName}
-          />
+          <input id="firstName" name="firstName" type="text" ref={firstName} />
           <label htmlFor="lastName">Last Name</label>
-          <input
-            id="lastName"
-            name="lastName"
-            type="text"
-            defaultValue
-            ref={lastName}
-          />
+          <input id="lastName" name="lastName" type="text" ref={lastName} />
           <label htmlFor="emailAddress">Email Address</label>
           <input
             id="emailAddress"
             name="emailAddress"
             type="email"
-            defaultValue
             ref={emailAddress}
           />
           <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            name="password"
-            type="password"
-            defaultValue
-            ref={password}
-          />
+          <input id="password" name="password" type="password" ref={password} />
           <button className="button" type="submit">
             Sign Up
           </button>
