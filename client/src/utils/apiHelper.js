@@ -12,7 +12,7 @@ export const api = (path, method = "GET", body = null, credentials = null) => {
   }
   if (credentials) {
     const encodedCredentials = btoa(
-      `${credentials.username}:${credentials.password}`
+      `${credentials.emailAddress}:${credentials.password}`
     );
     options.headers.Authorization = `Basic ${encodedCredentials}`;
   }
