@@ -4,9 +4,12 @@ import UserContext from "../context/UserContext";
 import ReactMarkdown from "react-markdown";
 
 const CourseDetail = () => {
-  const [course, setCourse] = useState([]);
+  const [course, setCourse] = useState({});
+  const [error, setError] = useState([]);
+
   const { id } = useParams();
   const { authUser } = useContext(UserContext);
+  console.log(authUser, "auth user is here");
   const navigate = useNavigate();
 
   const estimatedTime = course.estimatedTime;
@@ -18,55 +21,57 @@ const CourseDetail = () => {
   //parse to json
   //setCourse to new data?
 
-  //grabbing a specific course
+  // Fetch course info
   useEffect(() => {
-    try {
-      fetch(`http://localhost:5000/api/courses/${id}`)
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          setCourse(data);
-        });
-    } catch (err) {
-      console.log(err);
-    }
+    const fetchCourse = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/api/courses/${id}`);
+        const data = await response.json();
+        setCourse(data);
+      } catch (error) {
+        console.log("Error fetching course details", error);
+      }
+    };
+    fetchCourse();
   }, [id, navigate]);
 
-  //delete handler
+  // event handlers
   const handleDelete = async (event) => {
     event.preventDefault();
 
-    //store encoded credientials
+    // use btoa method to encode user credentials
     const encodedCredentials = btoa(
       `${authUser.emailAddress}:${authUser.password}`
     );
 
-    //"we want to DELETE the user's info"
     const fetchOptions = {
       method: "DELETE",
-      //credentials need to be passed in an auth header
-      //using basic auth scheme
       headers: {
         Authorization: `Basic ${encodedCredentials}`,
         "Content-Type": "application/json; charset=utf-8",
       },
     };
 
-    //send DELETE request
+    // Send DELETE request
     try {
       const response = await fetch(
         `http://localhost:5000/api/courses/${id}`,
         fetchOptions
       );
+      // If successfully deleted, navigate back to home route
       if (response.status === 204) {
-        console.log(`${course.title} was successfully deleted`);
+        console.log(`${course.title} was successfully deleted!`);
         navigate("/");
+        // If unauthorized, navigate to forbidden route
+      } else if (response.status === 403) {
+        const data = await response.json();
+        setError(data.error);
       } else {
         throw new Error();
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
+      navigate("/error");
     }
   };
 
@@ -102,9 +107,7 @@ const CourseDetail = () => {
             <div>
               <h3 className="course--detail--title">Course</h3>
               <h4 className="course--name">{title}</h4>
-              <p>
-                By {authUser.firstName} {authUser.lastName}
-              </p>
+              <p>By Bob</p>
               <ReactMarkdown>{description}</ReactMarkdown>
             </div>
             <div>
