@@ -1,6 +1,4 @@
-import React from "react";
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 
 function Courses() {
   const [courses, setCourses] = useState([]);
@@ -24,10 +22,7 @@ function Courses() {
         </a>
       ))}
 
-      <a
-        className="course--module course--add--module"
-        href="create-course.html"
-      >
+      <a className="course--module course--add--module" href="/courses/create">
         <span className="course--add--title">
           <svg
             version="1.1"
