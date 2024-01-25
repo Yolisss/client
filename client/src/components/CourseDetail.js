@@ -51,47 +51,6 @@ const CourseDetail = () => {
     }
   };
 
-  //     headers: {
-
-  // event handlers
-  // const handleDelete = async (event) => {
-  //   event.preventDefault();
-
-  //   // use btoa method to encode user credentials
-  //   const encodedCredentials = btoa(
-  //     `${authUser.emailAddress}:${authUser.password}`
-  //   );
-
-  //   const fetchOptions = {
-  //     method: "DELETE",
-  //     headers: {
-  //       Authorization: `Basic ${encodedCredentials}`,
-  //       "Content-Type": "application/json; charset=utf-8",
-  //     },
-  //   };
-
-  //   // Send DELETE request
-  //   try {
-  //     const response = await fetch(
-  //       `http://localhost:5000/api/courses/${id}`,
-  //       fetchOptions
-  //     );
-  //     // If successfully deleted, navigate back to home route
-  //     if (response.status === 204) {
-  //       console.log(`${course.title} was successfully deleted!`);
-  //       navigate("/");
-  //       // If unauthorized, navigate to forbidden route
-  //     } else if (response.status === 403) {
-  //       const data = await response.json();
-  //       console.log(data.error);
-  //     } else {
-  //       throw new Error();
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
   // console.log(course, authUser);
   //id, title, description, estimatedTime, materialsNeeded
   return (
